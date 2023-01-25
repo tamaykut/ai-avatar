@@ -138,10 +138,11 @@ body {
 .generate-button {
     place-content: flex-start;
     align-items: flex-start;
-    background-color: #F32E98;
+    background-color: #a4579c;
     border-radius: 100px;
     display: flex;
     flex: 0 0 auto;
+    margin: auto; /* Add this */
     flex-flow: column nowrap;
     gap: 10px;
     height: min-content;
@@ -261,7 +262,7 @@ body {
         justify-content: center;
         max-width: 700px;
         width: 100%;
-        padding: 50px;
+        padding: 20px;
     }
 
     .prompt-container {
