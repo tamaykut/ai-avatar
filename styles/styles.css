@@ -15,22 +15,21 @@ body {
     gap: 10px;
     height: 100vh;
     overflow: auto;
-    padding: 0px;
+    padding: 200px;
     position: relative;
 }
 
 .container {
     display: flex;
-    flex: 0 0 auto;
+    /* flex: 0 0 auto; */
     flex-flow: row nowrap;
-    gap: 10px;
-    /* height: fit-content; */
+    /* gap: 10px; */
     height: 100%;
     overflow: auto;
     position: relative;
     width: auto;
-    gap: 64px;
 }
+
 
 .header {
     display: flex;
@@ -76,6 +75,8 @@ body {
     width: min-content;
 }
 
+
+
 .prompt-box {
     border-bottom-width: 1px;
     border-color: rgba(255, 255, 255, 0.1);
@@ -119,39 +120,40 @@ body {
     border-color: rgba(255, 255, 255, 0.75)
 }
 
+.button-container {
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    margin: 10px;
+    flex-flow: row nowrap;
+    padding: 0px;
+    width: 400px;
+    height: 100px;
+}
 
 .prompt-buttons {
-    display: flex;
-    place-content: center;
+    width: 400px;
+    height: 100px;
     align-items: center;
-    justify-content: flex-end;
-    flex: 0 0 auto;
-    flex-flow: row nowrap;
-    gap: 12px;
-    height: min-content;
-    overflow: hidden;
-    padding: 0px;
-    position: relative;
-    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
 }
 
 .generate-button {
     place-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     background-color: #a4579c;
     border-radius: 100px;
     display: flex;
-    flex: 0 0 auto;
-    margin: auto; /* Add this */
-    flex-flow: column nowrap;
-    gap: 10px;
-    height: min-content;
-    overflow: hidden;
-    padding: 16px 24px;
+    margin: 10px; 
+    height: 50px;
+    width: 120px;
+    padding: 4px 8px;
     position: relative;
     text-decoration: none;
-    width: min-content;
-    will-change: transform;
     cursor: pointer;
 }
 
@@ -258,7 +260,7 @@ body {
 
 @media (max-width: 1200px) {
     .container {
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         max-width: 700px;
         width: 100%;

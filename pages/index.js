@@ -6,35 +6,16 @@ import axios from 'axios';
 import { Radar } from 'react-chartjs-2'
 import 'chart.js/auto';
 
-const data = {
-  labels: ['Artist 1', 'Artist 2', 'Artist 3', 'Artist 4', 'Artist 5'],
-  datasets: [{
-    label: 'Accreditation Score',
-    data: [1, 2, 3, 4, 5],
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgba(255, 99, 132, 1)',
-    borderWidth: 1,
-    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    gridLines: {
-      color: "white",
-      zeroLineColor: "white",
-      lineWidth: 1
-    },
-    
-  }]
-};
-
 const options = {
   scale: {
     angleLines: {
       color: "white",
-      lineWidth: 1,
+      lineWidth: 2,
       display: true
     },
     pointLabels: {
-      fontSize: 14,
+      fontSize: 20,
+      fontColor: "white" // Set the color of the labels
     },
     gridLines: {
       color: "white",
@@ -49,6 +30,11 @@ const options = {
 };
 
 
+const style = {
+  button: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+}
+
+
 
 const Home = () => {
   // Max number of times we will retry for model loading (took my up to 5 mins)
@@ -59,6 +45,25 @@ const Home = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [retry, setRetry] = useState(0);
   const [retryCount, setRetryCount] = useState(maxRetries);
+  const [data, setData] = useState({
+    labels: ['Artist 1', 'Artist 2', 'Artist 3', 'Artist 4', 'Artist 5'],
+    datasets: [{
+      label: 'Accreditation Score',
+      data: [0, 2, 3, 4, 5],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2,
+      pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      gridLines: {
+        color: "white",
+        zeroLineColor: "white",
+        lineWidth: 2
+      },
+      
+    }]
+  });
 
   const getFeatures = async () => {
     console.log('getFeatures')
@@ -70,7 +75,20 @@ const Home = () => {
         const response = await axios.post('/api/getFeatures', { image: img });
         console.log('img ------------------------------------', img)
         console.log(response.data);
-        document.getElementById("feature-img").src = 'data:image/png;base64,' + response.data;
+        document.getElementById("feature-img").src = 'data:image/png;base64,' + response.data.image;
+        const cosine_sims = response.data.cosine_sims;
+        console.log(cosine_sims.map(cosine_sim => cosine_sim))
+
+        const updatedData = {
+          ...data,
+          datasets: [
+            {
+              ...data.datasets[0],
+              data: cosine_sims.map(cosine_sim => cosine_sim)
+            }
+          ]
+        }
+        setData(updatedData);
     } catch (err) {
         console.error(err);
     }
@@ -183,6 +201,8 @@ const Home = () => {
           </div>
           <div className="prompt-container">
             <input className="prompt-box" value={input} onChange={onChange} />
+          </div>
+          <div className="button-container">
             <div className="prompt-buttons">
               <a
                 className={
@@ -226,7 +246,7 @@ const Home = () => {
                   {isGenerating ? (
                     <span className="loader"></span>
                   ) : (
-                    <p>Provenance</p>
+                    <p>Mint NFT</p>
                   )}
                 </div>
               </a>
@@ -240,16 +260,18 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="flex p-5 mx-auto items-center justify-middle">
-        <Image  width={256} height={256} id="feature-img" alt="feature image" />
-      </div>
-      <div className="flex p-5 mx-auto items-center justify-middle">
-        <Radar
-          data={data}
-          options={options}
-          width={400}
-          height={400}
-        />      
+      <div className="container">
+        <div className="flex p-5 mx-auto  items-center justify-middle">
+          <Image  width={256} height={256} id="feature-img" alt="feature image" />
+        </div>
+        <div className="flex p-5 mx-auto items-center justify-middle">
+          <Radar
+            data={data}
+            options={options}
+            width={400}
+            height={400}
+          />      
+        </div>
       </div>
       <div className="badge-container grow">
         <a
